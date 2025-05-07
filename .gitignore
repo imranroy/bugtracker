@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Django static files
+/staticfiles/
+/media/
+
+# Virtual environment
+venv/
+env/
+
+# VSCode
+.vscode/
+
+# Environment variables
+.env
+
+# macOS
+.DS_Store
+
+# SQLite (if used)
+*.sqlite3
+
+# Migrations (optional if you're okay with ignoring them)
+# ** Uncomment if you want to ignore all migration files
+# */migrations/
+# */migrations/*.py
+# */migrations/*.pyc
