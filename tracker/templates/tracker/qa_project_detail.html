@@ -1,0 +1,35 @@
+{% extends 'tracker/base.html' %}
+{% block content %}
+<h2>{{ project.name }}</h2>
+<p><strong>Description:</strong> {{ project.description }}</p>
+<p><strong>Status:</strong> {{ project.get_status_display }}</p>
+<p><strong>Created At:</strong> {{ project.created_at }}</p>
+
+<hr>
+
+<h4>Issues</h4>
+{% if issues %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for issue in issues %}
+        <tr>
+            <td>{{ issue.title }}</td>
+            <td>{{ issue.get_status_display }}</td>
+            <td>{{ issue.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No issues reported for this project yet.</p>
+{% endif %}
+
+<a href="{% url 'raise_issue' project.id %}" class="btn btn-warning mt-3">Raise New Issue</a>
+{% endblock %}

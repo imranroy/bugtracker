@@ -1,0 +1,35 @@
+body {
+    background-color: #f8f9fa;
+}
+
+h1,
+h2 {
+    color: #333;
+    font-weight: 600;
+}
+
+.card-title {
+    color: #0056b3;
+    font-weight: bold;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.alert {
+    font-size: 1.2rem;
+}
+
+.btn {
+    font-weight: 600;
+    padding: 10px 20px;
+}
+
+footer {
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}

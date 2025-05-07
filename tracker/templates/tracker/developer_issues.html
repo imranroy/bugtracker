@@ -1,0 +1,35 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<h2>Issues Reported on Your Projects</h2>
+
+{% if issues %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Project</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Reported By</th>
+            <th>Status</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for issue in issues %}
+        <tr>
+            <td>{{ issue.project.name }}</td>
+            <td>{{ issue.title }}</td>
+            <td>{{ issue.description }}</td>
+            <td>{{ issue.reported_by.username }}</td>
+            <td>{{ issue.status }}</td>
+            <td>{{ issue.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No issues reported yet.</p>
+{% endif %}
+
+{% endblock %}

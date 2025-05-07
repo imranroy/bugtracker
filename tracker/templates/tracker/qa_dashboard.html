@@ -1,0 +1,15 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<h2>QA Dashboard</h2>
+
+<div class="mb-4">
+    <a href="{% url 'qa_projects' %}" class="btn btn-primary">My Projects</a>
+    <a href="{% url 'qa_available_projects' %}" class="btn btn-success">Available Projects</a>
+    
+</div>
+
+<hr>
+
+<p>Welcome, {{ request.user.username }}. Select a section above to get started.</p>
+{% endblock %}

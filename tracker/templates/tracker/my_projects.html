@@ -1,0 +1,46 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<h2>My Projects</h2>
+
+{% if projects %}
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Created At</th>
+            <th>Open Issues</th>
+            <th>Status</th>
+            
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for project in projects %}
+        <tr>
+            <td>{{ project.name }}</td>
+            <td>{{ project.description }}</td>
+            <td>{{ project.created_at|date:"M d, Y H:i" }}</td>
+            <td>{{ project.open_issues_count }}</td>
+            <td>
+                <span class="badge 
+                    {% if project.status == 'open' %}bg-primary
+                    {% elif project.status == 'in_progress' %}bg-success
+                    {% elif project.status == 'completed' %}bg-danger
+                    {% else %}bg-secondary{% endif %}">
+                    {{ project.get_status_display }}
+                </span>
+            </td>
+            
+            
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>You have no projects assigned.</p>
+
+{% endif %}
+<a href="{% url 'developer_issues' %}" class="btn btn-warning mb-3">View Reported Issues</a>
+{% endblock %}

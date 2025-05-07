@@ -1,0 +1,47 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<h2>My QA Projects</h2>
+
+{% if projects %}
+<table class="table table-bordered">
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Created At</th>
+        <th>Action</th> <!-- Add this -->
+    </tr>
+</thead>
+<tbody>
+    {% for project in projects %}
+    <tr>
+        <td>{{ project.name }}</td>
+        <td>{{ project.description }}</td>
+        <td>{{ project.status }}</td>
+        <td>{{ project.created_at }}</td>
+        
+        <!-- ADD THIS BLOCK -->
+        <td>
+            {% if not project.qa_assigned %}
+            <form action="{% url 'qa_pick_project' project.id %}" method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-sm">Pick Project</button>
+            </form>
+            {% else %}
+            <span class="badge bg-secondary">Already Picked</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+</table>
+
+
+{% else %}
+<p>No projects have been assigned to you for QA.</p>
+{% endif %}
+
+{% endblock %}

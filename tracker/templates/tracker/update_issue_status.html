@@ -1,0 +1,15 @@
+{% extends "tracker/base.html" %}
+{% load static %}
+{% block title %}Update Issue Status{% endblock %}
+
+{% block content %}
+<h1>Update Status for Issue: {{ issue.title }}</h1>
+
+<form method="post" class="mt-4">
+    {% csrf_token %}
+    <div class="mb-3">
+        {{ form.as_p }}
+    </div>
+    <button type="submit" class="btn btn-success">Update Status</button>
+</form>
+{% endblock %}

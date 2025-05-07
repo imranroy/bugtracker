@@ -1,0 +1,11 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<h2>Issue #{{ issue.id }} - {{ issue.title }}</h2>
+<p><strong>Description:</strong> {{ issue.description }}</p>
+<p><strong>Status:</strong> {{ issue.status }}</p>
+<p><strong>Priority:</strong> {{ issue.priority }}</p>
+<p><strong>Reported by:</strong> {{ issue.reported_by.username }}</p>
+<p><strong>Assigned to:</strong> {{ issue.assigned_to.username }}</p>
+<p><strong>Created at:</strong> {{ issue.created_at }}</p>
+{% endblock %}

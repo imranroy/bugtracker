@@ -1,0 +1,35 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<h2>Issues for Project: {{ project.name }}</h2>
+
+{% if issues %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Issue ID</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Assigned Developer</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for issue in issues %}
+        <tr>
+            <td>{{ issue.id }}</td>
+            <td>{{ issue.title }}</td>
+            <td>{{ issue.get_status_display }}</td>
+            <td>{{ issue.assigned_to.username }}</td>
+            <td>
+                <a href="{% url 'issue_detail' issue.id %}" class="btn btn-info">View Details</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No issues found for this project.</p>
+{% endif %}
+
+{% endblock %}
