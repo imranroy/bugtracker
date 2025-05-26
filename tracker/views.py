@@ -21,7 +21,7 @@ def available_projects(request):
 # Project list view for Managers and general use
 @login_required
 def project_list(request):
-    projects = Project.objects.all()
+    projects = Project.objects.select_related('picked_by')
     return render(request, 'tracker/project_list.html', {'projects': projects})
 
 # View to create a project (Manager only)
@@ -89,19 +89,22 @@ def create_issue(request, project_id):
 
     project = get_object_or_404(Project, pk=project_id)
 
+    # Get the form instance early so we can always modify it
+    form = IssueForm(request.POST or None)
+
+    # Restrict developer options if QA is creating the issue
+    if request.user.groups.filter(name='QA').exists():
+        dev_group = Group.objects.get(name='Developers')
+        form.fields['assigned_to'].queryset = dev_group.user_set.all()
+
     if request.method == 'POST':
-        form = IssueForm(request.POST)
         if form.is_valid():
             issue = form.save(commit=False)
             issue.project = project
             issue.created_by = request.user
+            print("Assigned to:", form.cleaned_data['assigned_to'])
             issue.save()
             return redirect('project_detail', pk=project.id)
-    else:
-        form = IssueForm()
-        if request.user.groups.filter(name='QA').exists():
-            dev_group = Group.objects.get(name='Developers')
-            form.fields['assigned_to'].queryset = dev_group.user_set.all()
 
     return render(request, 'tracker/create_issue.html', {'form': form, 'project': project})
 
@@ -184,17 +187,6 @@ def update_project_status(request, project_id):
         else:
             messages.error(request, "Invalid status selection.")
             return redirect('available_projects')
-    return redirect('available_projects')
-
-@login_required
-def update_project_status(request, project_id):
-    project = get_object_or_404(Project, id=project_id)
-
-    if request.user == project.picked_by and request.method == 'POST':
-        new_status = request.POST.get('status')
-        if new_status in dict(Project.STATUS_CHOICES):
-            project.status = new_status
-            project.save()
     return redirect('available_projects')
 
 @login_required
@@ -285,7 +277,8 @@ def raise_issue(request, project_id):
                 description=description,
                 project=project,
                 reported_by=request.user,
-                created_by=request.user 
+                created_by=request.user,
+                assigned_to=project.picked_by  
             )
             messages.success(request, 'Issue raised successfully.')
             return redirect('qa_project_detail', project_id=project.id)

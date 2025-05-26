@@ -1,7 +1,7 @@
 {% extends 'tracker/base.html' %}
 
 {% block content %}
-<h2>My QA Projects</h2>
+<h2>QA Projects</h2>
 
 {% if projects %}
 <table class="table table-bordered">
@@ -19,7 +19,16 @@
     <tr>
         <td>{{ project.name }}</td>
         <td>{{ project.description }}</td>
-        <td>{{ project.status }}</td>
+        <td>
+            <span class="badge 
+                        {% if project.status == 'open' %}bg-primary
+                        {% elif project.status == 'in_progress' %}bg-success
+                        {% elif project.status == 'completed' %}bg-danger
+                        {% else %}bg-secondary
+                        {% endif %}">
+                {{ project.get_status_display }}
+            </span>
+        </td>
         <td>{{ project.created_at }}</td>
         
         <!-- ADD THIS BLOCK -->

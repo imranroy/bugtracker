@@ -3,24 +3,40 @@
 {% block title %}All Projects{% endblock %}
 
 {% block content %}
-<h1 class="text-center mb-4">Available Projects</h1>
-<div class="row">
-    {% for project in projects %}
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ project.name }}</h5>
-                <p class="card-text">{{ project.description|truncatewords:20 }}</p>
-                <a href="{% url 'project_detail' project.pk %}" class="btn btn-primary">View Details</a>
-            </div>
-        </div>
-    </div>
-    {% empty %}
-    <div class="col-12">
-        <div class="alert alert-warning" role="alert">
-            No projects found.
-        </div>
-    </div>
-    {% endfor %}
-</div>
+<h1 class="text-center mb-4">All Projects</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Project</th>
+            <th>Assigned To</th>
+            <th>Status</th>
+            <th>Assigned Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for project in projects %}
+        <tr>
+            <td>{{ project.name }}</td>
+            <td>
+                {% if project.picked_by %}
+                {{ project.picked_by.username }}
+                {% else %}
+                Not Assigned
+                {% endif %}
+            </td>
+            <td>{{ project.get_status_display }}</td>
+            <td>{{ project.created_at|date:"M d, Y" }}</td>
+            <td>
+                <a href="{% url 'project_detail' project.pk %}" class="btn btn-sm btn-primary">View</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center text-danger">No projects found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
